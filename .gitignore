@@ -1,0 +1,5 @@
+**.idea/
+**.git/
+**cmake-build-debug/
+**build
+drawer.py

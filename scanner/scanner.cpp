@@ -253,7 +253,7 @@ struct token* get_token(void)
                     }
                     else                // / for div
                     {
-                        per_token->type = MUL;
+                        per_token->type = DIV;
                         back_char(per_chr);
                     }
                     break;

@@ -133,5 +133,5 @@ for T from 0 to 300 step 0.01 draw (t, -ln(t));
 
 什么？👴连代码都白给了实验报告还想让👴帮你写？能不能爪巴嗷
 
-srds，👴还是大发善心帮你✍了一份：[https://github.com/arttnba3/compiler_principles/report.pdf](https://github.com/arttnba3/compiler_principles/report.pdf)
+srds，👴还是大发善心帮你✍了一份：[https://github.com/arttnba3/compiler_principles/blob/main/report.pdf](https://github.com/arttnba3/compiler_principles/blob/main/report.pdf)
 

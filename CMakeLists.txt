@@ -7,12 +7,16 @@ AUX_SOURCE_DIRECTORY(. SRC_DIRS)
 
 set(CMAKE_CXX_STANDARD 17)
 include_directories("${PROJECT_SOURCE_DIR}")
+include_directories("include")
 
-add_subdirectory(message)
-add_subdirectory(parser)
-add_subdirectory(scanner)
-add_subdirectory(semantic)
+add_subdirectory("lib")
+add_subdirectory("compiler")
 
 add_executable(A3DrawLang main.cpp)
 
-target_link_libraries(A3DrawLang Message Parser Scanner Semantic)
+# Options for debugging only
+# SET(CMAKE_BUILD_TYPE "Debug")
+# SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
+# SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
+target_link_libraries(A3DrawLang Lib Compiler)

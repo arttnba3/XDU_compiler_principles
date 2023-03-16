@@ -1,74 +1,90 @@
-/*
- * simple compiler developed by arttnba3, Xidian University
- * 2021.11
-*/
-
 #include <iostream>
+#include <fstream>
 #include <cstring>
 #include <cstdlib>
-#include "message/message.h"
-#include "scanner/scanner.h"
-#include "parser/parser.h"
-#include "semantic/semantic.h"
+#include "tools.h"
+#include "a3compiler.h"
 
 using namespace std;
 
-int main(int argc, char **argv, char **envp)
+a3lib::cmd_args* parse_arg(int argc, const char **argv)
 {
-    char    choice;
+    a3lib::cmd_args *cmd_args;
 
-    // check the params
-    if (argc < 2)
-        err_exit("Usage: ./A3compiler [object file]", "", -EFAULT);
-
-    // init the scanner, open the input file
-    if (!init_scanner(argv[1]))
-        err_exit("failed to open the source file: %s", argv[1],  -EFAULT);
-
-    
-    // test for scanner
-    if (argv[2] && !strcmp(argv[2], "test"))
-    {
-        cout << "Testing Token..." << endl;
-        struct token *t;
-        t = get_token();
-        for (int i = 0; !(t->type == ERRORTOKEN || t->type == NONTOKEN); i++)
-        {
-            cout << "token " << i << ": " << "letme: " << ((t->lexme) ? t->lexme : "NULL") << " type: " << t->type << " val: " << t->val << " func ptr: " << (size_t)(t->func_ptr) << endl;
-            t = get_token();
-        }
-        exit(0);
+    try {
+        cmd_args = a3lib::args_parser(argc - 1, argv + 1);
+    } catch (a3lib::cmd_args_error &err) {
+        a3lib::err_exit(err.what());
     }
 
-    // parsing the code, translate into python code
-    cout << "Start to parse..." << endl;
-    parser();
+    return cmd_args;
+}
 
-    // close the scanner
-    cout << "Done." << endl;
-    close_scanner();
-    close_drawer();
+int main(int argc, const char **argv)
+{
+    a3compiler::A3Compiler *compiler;
+    a3lib::cmd_args *cmd_args;
+    ifstream *input;
+    ofstream *output;
 
-    // run the python to draw the pic
-    while (true)
-    {
+    /* init for cmd args */
+    cmd_args = parse_arg(argc, argv);
+
+    /* for --help to print help info only */
+    if (cmd_args->is_help()) {
+        a3lib::help_info();
+        return EXIT_SUCCESS;
+    }
+
+    input = new ifstream(cmd_args->get_input_file(), ios::in | ios::binary);
+    output = new ofstream(cmd_args->get_output_file(), ios::out | ios::trunc);
+
+    if (!input) {
+        a3lib::err_exit("failed to open input file: '" \
+                        + cmd_args->get_input_file() + "'");
+    }
+
+    if (!output) {
+        a3lib::err_exit("failed to open output file: '" \
+                        + cmd_args->get_output_file() + "'");
+    }
+
+    compiler = new a3compiler::A3Compiler(input, output, nullptr);
+
+    try {
+        /* for --test option to print all valid tokens only */
+        if (cmd_args->get_run_type() == a3lib::TEST_SCANNER) {
+            compiler->test_token();
+            return 0;
+        } else { /* normal compiling */
+            compiler->compile();
+        }
+    } catch (a3compiler::A3CompilerError &e) {
+        a3lib::err_exit(e.what());
+    }
+
+    input->close();
+    output->close();
+
+    /* run the python to draw the pic */
+    while (true) {
+        char choice;
+
         cout << "Interpretation done. run it now? [Y/n]" << endl;
+
         cin.get(choice);
-        if (toupper(choice) == 'Y' || choice == '\n')
-        {
+
+        if (toupper(choice) == 'Y' || choice == '\n') {
             cout << "Press enter to exit..." << endl;
-            system("python3 ./drawer.py");
+            system(("python3 " + cmd_args->get_output_file()).c_str());
             break;
-        }
-        else if (toupper(choice) == 'N')
-        {
-            cout << "Result saved in ./drawer.py" << endl;
+        } else if (toupper(choice) == 'N') {
+            cout << "Result saved in " + cmd_args->get_output_file() << endl;
             exit(0);
-        }
-        else
-        {
+        } else {
             cout << "Invalid choice" << endl;
         }
     }
 
+    return 0;
 }

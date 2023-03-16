@@ -2,4 +2,5 @@
 **.git/
 **cmake-build-debug/
 **build
+**.vscode
 drawer.py

@@ -41,6 +41,8 @@ cmake 构建完成之后会在我们创建的 `build` 目录下生成一个 visu
 
 ![image.png](https://s2.loli.net/2023/03/17/3ZvkACeoVWw5h9X.png)
 
+运行后一个热腾腾的可执行文件 `A3DrawLang.exe` 就会出现在 `./Debug/` 目录下
+
 ### II. Use on Linux
 
 > 对于 Linux 系统，你需要提前安装好 gcc 组件及 makefile

@@ -2,6 +2,7 @@
 #define _A3_COMPILER_COMPILE_ERR_H_
 
 #include <iostream>
+#include <string>
 
 namespace a3compiler {
     using std::string, std::exception, std::to_string;

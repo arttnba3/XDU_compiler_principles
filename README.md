@@ -33,13 +33,13 @@ cmake ..
 
 cmake 构建完成之后会在我们创建的 `build` 目录下生成一个 visual studio project，如下：
 
-![image.png](https://i.loli.net/2021/11/19/ps4eVBAFRn2hwzD.png)
+![image.png](https://s2.loli.net/2023/03/17/7BfAWjQRXOsLgG2.png)
 
 然后直接双击 `A3DrawLang.sln`，用 visual studio 打开即可
 
-需要注意的是这里我们需要**手动设置启动项为 A3DrawLang**，在左边的解决方案管理器中选中 `A3DrawLang`，然后点击 `项目`，点击 `设为启动项目`
+需要注意的是这里我们需要**手动设置启动项为 A3DrawLang**，在左边的解决方案管理器中选中 `A3DrawLang`，然后点击 `项目`，点击 `设为启动项目` 后就能直接运行了
 
-![image.png](https://i.loli.net/2021/11/19/Z8HFTE2ekj1ioNs.png)
+![image.png](https://s2.loli.net/2023/03/17/3ZvkACeoVWw5h9X.png)
 
 ### II. Use on Linux
 
